@@ -86,4 +86,38 @@ router.post('/newfolder', (req, res) => {
     });
 });
 
+router.get('/files', (req, res) => {
+    const uploadsPath = path.join(__dirname, '..', 'uploads');
+
+    fs.readdir(uploadsPath, { withFileTypes: true }, (err, files) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("error reading files");
+        }
+        const filesWithUrls = files.map(file => ({
+            name: file.name,
+            isDirectory: file.isDirectory(),
+            url: file.isDirectory() ? file.name : encodeURIComponent(file.name)
+        }));
+        res.render('files', { files: filesWithUrls, currentPath: '/' });
+    });
+});
+
+router.get('/files/:folder', (req, res) => {
+    const folderName = req.params.folder;
+    const folderPath = path.join(__dirname, '..', 'uploads', folderName);
+
+    fs.readdir(folderPath, { withFileTypes: true }, (err, files) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send("error reading folder");
+        }
+        const filesWithUrls = files.map(file => ({
+            name: file.name,
+            isDirectory: file.isDirectory(),
+            url: path.join(req.params.folder, file.name) // Construct path for folder
+        }));
+        res.render('files', { files: filesWithUrls, currentPath: path.join('/', req.params.folder) });    
+    });
+});
 module.exports = router;
