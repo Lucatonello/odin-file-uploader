@@ -7,5 +7,17 @@
 </head>
 <body>
     <h1>Welcome</h1>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <h2>Upload a file: </h2>
+        <input type="file" name="file" />
+        <button type="submit">Upload</button>
+    </form>
+
+    <form action="/newfolder" method="POST">
+        <h2>Create new folder</h2>
+        <input type="text" name="folderName" placeholder="Folder Name" required />
+        <button type="submit">Create Folder</button>
+    </form>
 </body>
 </html>
