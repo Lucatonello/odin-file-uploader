@@ -6,7 +6,8 @@
     <title>Files</title>
 </head>
 <body>
-    <h1>Files and Folders in <%= currentPath %></h1>
+    <h1>Welcome</h1>
+    <h1><%= currentPath %></h1>
 
     <ul>
         <% files.forEach(file => { %>
@@ -15,15 +16,30 @@
                     <a href="/files/<%= file.url %>">
                         [Folder] <%= file.name %>
                     </a>
+                    
                 </li>
+                
             <% } else { %>
                 <li>
                     <a href="/uploads/<%= file.url %>">
                         <%= file.name %>
                     </a>
                 </li>
+                
             <% } %>
+            
         <% }) %>
     </ul>
+        <form action="/upload<%= currentPath  %>" method="post" enctype="multipart/form-data">
+            <h2>Upload a file: </h2>
+            <input type="file" name="file" />
+            <button type="submit">Upload</button>
+        </form>
+    
+        <form action="/newfolder<%= currentPath %>" method="POST">
+            <h2>Create new folder</h2>
+            <input type="text" name="folderName" placeholder="Folder Name" required />
+            <button type="submit">Create Folder</button>
+        </form>
 </body>
 </html>
